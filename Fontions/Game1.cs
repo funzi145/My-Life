@@ -13,9 +13,15 @@ namespace My_Life
         //General
         public static Color backgroundColor = new Color(51, 51, 51);
 
-        int secondes = 0, minutes = 0, heures = 0, min2;
+        public static bool toExit {get; set;}
+        public static bool isTyping { get; set;}
+        public static string[] name = new string[3];
+
+        int secondes = 0, minutes = 0, heures = 0;
 
         public static int TPS { get; set; }
+
+        public static int[] TPSinfo = new int[3];
         public static int Monnaie { get; set; }
         public static int Banque { get; set; }
         public static int scene { get; set; }
@@ -28,7 +34,8 @@ namespace My_Life
             virement,
             retrait,
             multiplierBanque = 1,
-            selectionMultiplierBanque = 1;
+            selectionMultiplierBanque = 1,
+            saveNbr =0;
 
         public static string MonnaieString,
             BanqueString,
@@ -41,6 +48,15 @@ namespace My_Life
 
         public static SpriteFont ImpactFont24, ImpactFont9;
 
+        Texture2D topBarTex, boutonBackTex, boutonSaveTex, boutonParametreTex;
+
+        Rectangle boutonBackRectangle = new Rectangle(350, 16, 120, 30),
+                boutonParametreRectangle = new Rectangle(315, 15, 30, 30),
+                boutonSaveRectangle = new Rectangle(280, 15, 30, 30);
+
+        string topBarString = "MENU PRINCIPAL";
+
+        Color textColor = new Color(64, 64, 64);
 
         public Game1()
         {
@@ -59,9 +75,16 @@ namespace My_Life
             Monnaie = 1500;
             sound = true;
             music = true;
+            toExit = false;
 
-            base.Initialize();
+            name = SaveGame.ReadSaveName();
+            for (int i = 0; i < 3; i++)
+            {
+                name[i] = name[i].Substring(1, name[i].Length-2);
+            }
+            
 
+           base.Initialize();
         }
 
         protected override void LoadContent()
@@ -73,16 +96,24 @@ namespace My_Life
                 ImpactFont9 = Content.Load<SpriteFont>("Font/ImpactFont9");
                 ImpactFont24 = Content.Load<SpriteFont>("Font/ImpactFont24");
             }
+            topBarTex = Content.Load<Texture2D>("Logo/Top Bar");
+            boutonBackTex = Content.Load<Texture2D>("Logo/Bouton Quitter");
+
+            boutonSaveTex = Content.Load<Texture2D>("Logo/Logo Sauvegarde");
+            boutonParametreTex = Content.Load<Texture2D>("Logo/Logo Parametre");
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            if (scene == 1) if (ClickTest(Mouse.GetState(), boutonBackRectangle)) Exit();
-
             ks1 = Keyboard.GetState();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                if (ks1.IsKeyDown(Keys.Escape) && ks2.IsKeyUp(Keys.Escape))
+                {
+                    if (!isTyping)
+                        Exit();
+                    else isTyping = false;
+                }
+            
             if (ks1.IsKeyDown(Keys.NumPad0)) scene = 0; 
             else if (ks1.IsKeyDown(Keys.NumPad1)) scene = 1; 
             else if (ks1.IsKeyDown(Keys.NumPad2)) scene = 2; 
@@ -93,6 +124,13 @@ namespace My_Life
             else if (ks1.IsKeyDown(Keys.NumPad7)) scene = 7;
             else if (ks1.IsKeyDown(Keys.NumPad8)) scene = 8;
 
+            if (ClickTest(Mouse.GetState(), boutonBackRectangle))
+            {
+                if (scene == 1)
+                    this.Exit();
+                else scene = 1;
+            }
+
             faimString = faim.ToString();
             santeString = sante.ToString();
             criminaliteString = criminalite.ToString();
@@ -102,7 +140,11 @@ namespace My_Life
 
             base.Update(gameTime);
 
-            tpsJeu();
+            if(toExit) this.Exit();
+            ks2 = ks1;
+
+            TPS++;
+            TPSCount();
 
         }
 
@@ -111,10 +153,8 @@ namespace My_Life
             ms1 = Mouse.GetState();
             ks1 = Keyboard.GetState();
 
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
             _spriteBatch.Begin();
-            GraphicsDevice.Clear(backgroundColor);
+            GraphicsDevice.Clear(Color.DarkGray);
 
             _spriteBatch.DrawString(ImpactFont9, "Version InDev, Pre-Experimental Build", new Vector2(5, 633), Color.Black);
 
@@ -154,9 +194,23 @@ namespace My_Life
             ks2 = ks1;
             ms2 = ms1;
 
+            topBarString = StringChoose();
+
+            if (scene != 0)
+            {
+                _spriteBatch.Draw(topBarTex, new Vector2(20, 10), Color.White);
+                _spriteBatch.DrawString(Game1.ImpactFont24, topBarString, new Vector2(40, 10), textColor);
+                _spriteBatch.Draw(boutonBackTex, new Vector2(boutonBackRectangle.X, boutonBackRectangle.Y), Color.White);
+                _spriteBatch.Draw(boutonSaveTex, new Vector2(boutonSaveRectangle.X, boutonSaveRectangle.Y), Color.White);
+                _spriteBatch.Draw(boutonParametreTex, new Vector2(boutonParametreRectangle.X, boutonParametreRectangle.Y), Color.White);
+            }
+            boutonBackTex = Content.Load<Texture2D>("Logo/Bouton Retour");
+            if (scene == 1)
+                boutonBackTex = Content.Load<Texture2D>("Logo/Bouton Quitter");
             _spriteBatch.End();
 
             base.Draw(gameTime);
+
         }
 
         public static bool ClickTest(MouseState posSouris, Rectangle Button)
@@ -176,17 +230,47 @@ namespace My_Life
             return false;
         }
 
-        public void tpsJeu()
+        public void TPSCount()
         {
-            if (TPS > 59) secondes = TPS / 60;
-            if (secondes > 59) minutes = secondes / 60;
+            if (TPS > 60) secondes = TPS / 60;
+            if (secondes > 60) minutes = secondes / 60;
             if (minutes > 60) heures = minutes / 60;
-            if (min2 != minutes)
+        }
+        public int[] TPSCount(int tps)
+        {
+            int[] info = new int[3];
+            if (tps > 60) info[0] = tps / 60;
+            if (info[0] > 60) info[1] = info[0] / 60;
+            if (info[1] > 60) info[2] = info[1] / 60;
+
+            return info;
+        }
+
+        public string StringChoose()
+        {
+            switch (scene)
             {
-                min2 = secondes;
+                case -1:
+                    return "SAUVEGARDER";
+                case 1:
+                    return "MENU PRINCIPAL";
+                case 2:
+                    return "NOURRITURE";
+                case 3:
+                    return "SANTE";
+                case 4:
+                    return "JOB";
+                case 5:
+                    return "BANQUE";
+                case 6:
+                    return "ACHAT";
+                case 7:
+                    return "NESTER";
+                case 8:
+                    return "PARAMETRE";
+                default:
+                    return "Erreur";
             }
-            min2 = minutes;
-            
         }
 
     }

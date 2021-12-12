@@ -9,8 +9,6 @@ namespace My_Life
 {
     class Scene5
     {
-        //MouseState ms1, ms2, posSouris;
-        //KeyboardState ks1, ks2;
 
         int Monnaie = Game1.Banque,
             Banque = Game1.Banque,
@@ -24,8 +22,7 @@ namespace My_Life
         string virementString,
             retraitString;
 
-        Texture2D topBarTex,
-            boutonBackTexture,
+        Texture2D boutonBackTexture,
 
             cadreBanqueTexture,
             cadreBanque2Texture,
@@ -41,8 +38,7 @@ namespace My_Life
             logoMonnaieTexture, 
             logoBanquePetitTexture;
 
-        Rectangle boutonBackRectangle = Game1.boutonBackRectangle,
-            plus100VirementRectangle = new Rectangle(170, 165, 55, 40),
+        Rectangle plus100VirementRectangle = new Rectangle(170, 165, 55, 40),
             moins100VirementRectangle = new Rectangle(45, 165, 55, 40),
             multiplierRetraitRectangle = new Rectangle(335, 165, 50, 40),
 
@@ -121,14 +117,12 @@ namespace My_Life
                     if (ClickTest(Game1.posSouris, boutonValiderVirement)) { Game1.Banque += virement; Game1.Monnaie -= virement; }
             }
 
-            if (Game1.ms1.LeftButton == ButtonState.Pressed && Game1.ms2.LeftButton == ButtonState.Released) if (ClickTest(Game1.posSouris, boutonBackRectangle)) ChangeScene(1);
             Game1.ks2 = Game1.ks1;
             Game1.ms2 = Game1.ms1;
         }
 
         protected void LoadContent(GraphicsDeviceManager device, SpriteBatch spriteBatch, Microsoft.Xna.Framework.Content.ContentManager Content)
         {
-            topBarTex = Content.Load<Texture2D>("Scene 5/TopBar");
             boutonBackTexture = Content.Load<Texture2D>("Logo/Bouton Retour");
             cadreBanqueTexture = Content.Load<Texture2D>("Scene 5/Cadre Banque");
             cadreBanque2Texture = Content.Load<Texture2D>("Scene 5/Cadre Banque 2");
@@ -166,13 +160,10 @@ namespace My_Life
         {
             device.GraphicsDevice.Clear(backgroundColor);
 
-            _spriteBatch.Draw(topBarTex, new Vector2(20, 10), Color.White);
-
             _spriteBatch.Draw(cadreBanqueTexture, new Vector2(20, 60), Color.White);
             _spriteBatch.Draw(cadreVirementTexture, new Vector2(30, 70), Color.White);
             _spriteBatch.Draw(cadreRetraitTexture, new Vector2(255, 70), Color.White);
             _spriteBatch.Draw(cadreBanque2Texture, new Vector2(20, 310), Color.White);
-            _spriteBatch.Draw(boutonBackTexture, new Vector2(boutonBackRectangle.X, boutonBackRectangle.Y), Color.White);
 
             _spriteBatch.Draw(zoneEcritureBanqueTexture, new Vector2(45, 120), Color.White);
             _spriteBatch.Draw(zoneEcritureBanqueTexture, new Vector2(270, 120), Color.White);

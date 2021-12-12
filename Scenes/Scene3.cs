@@ -7,15 +7,13 @@ using System.Text;
 
 namespace My_Life
 {
-    class Scene6
+    class Scene3
     {
-        Texture2D topBarTex;
-
         Color backgroundColor = Color.DarkGray;
 
         public static void start(GraphicsDeviceManager device, SpriteBatch spriteBatch, Microsoft.Xna.Framework.Content.ContentManager Content, GameTime gametime)
         {
-            var sc = new Scene6();
+            var sc = new Scene3();
             sc.LoadContent(device, spriteBatch, Content);
             sc.Draw(device, spriteBatch, gametime);
             sc.Update(gametime);
@@ -28,13 +26,11 @@ namespace My_Life
 
         protected void LoadContent(GraphicsDeviceManager device, SpriteBatch spriteBatch, Microsoft.Xna.Framework.Content.ContentManager Content)
         {
-            topBarTex = Content.Load<Texture2D>("Scene 6/TopBar");
         }
 
         protected void Draw(GraphicsDeviceManager device, SpriteBatch spriteBatch, GameTime gametime)
         {
             device.GraphicsDevice.Clear(backgroundColor);
-            spriteBatch.Draw(topBarTex, new Vector2(20, 10), Color.White);
         }
 
         private void ChangeScene(int a)

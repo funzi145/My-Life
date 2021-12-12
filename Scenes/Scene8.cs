@@ -9,8 +9,7 @@ namespace My_Life
 {
     class Scene8
     {
-        Texture2D topBarTex;
-        Texture2D cadreSauvegardeTex;
+        Texture2D cadreSauvegardeTex, cadrePartieChargeeTex;
         Texture2D boutonSonsTex, boutonMusiqueTex;
 
         Rectangle boutonSauvegarde1Rectangle = new Rectangle(20, 370, 460, 80),
@@ -19,8 +18,7 @@ namespace My_Life
                 boutonSonsRectangle = new Rectangle(50, 150, 50, 50),
                 boutonMusiqueRectangle = new Rectangle(150, 150, 50, 50);
 
-        string topBarString = "Parametres";
-        string nameSave1, nameSave2, nameSave3;
+        string[] nameSave = new string[3];
 
         Color backgroundColor = Color.DarkGray;
         Color textColor = new Color(64, 64, 64);
@@ -29,26 +27,23 @@ namespace My_Life
         {
             var sc = new Scene8();
             sc.LoadContent(device, spriteBatch, Content);
-            sc.Draw(device, spriteBatch, gametime);
             sc.Update(gametime);
+            sc.Draw(device, spriteBatch, gametime);
         }
 
         public void Update(GameTime gameTime)
         {
-            loadSaveGame();
             if (Game1.sound) { if (Game1.ClickTest(Mouse.GetState(), boutonSonsRectangle)) Game1.sound = false; }  
             else { if (Game1.ClickTest(Mouse.GetState(), boutonSonsRectangle)) Game1.sound = true; }
 
             if (Game1.music) { if (Game1.ClickTest(Mouse.GetState(), boutonMusiqueRectangle)) Game1.music = false; }
             else { if (Game1.ClickTest(Mouse.GetState(), boutonMusiqueRectangle)) Game1.music = true; }
-                
-
         }
 
         protected void LoadContent(GraphicsDeviceManager device, SpriteBatch spriteBatch, Microsoft.Xna.Framework.Content.ContentManager Content)
         {
-            topBarTex = Content.Load<Texture2D>("Scene 8/Top Bar");
             cadreSauvegardeTex = Content.Load<Texture2D>("Scene 8/Cadre Sauvegarde");
+            cadrePartieChargeeTex = Content.Load<Texture2D>("Scene 8/Cadre Partie Chargée");
             boutonMusiqueTex = Content.Load<Texture2D>("Scene 8/Bouton Musique");
 
             if(Game1.sound)
@@ -66,8 +61,8 @@ namespace My_Life
         protected void Draw(GraphicsDeviceManager device, SpriteBatch spriteBatch, GameTime gametime)
         {
             device.GraphicsDevice.Clear(backgroundColor);
-            spriteBatch.Draw(topBarTex, new Vector2(20, 10), Color.White);
-            spriteBatch.DrawString(Game1.ImpactFont24,topBarString, new Vector2(40, 10), textColor);
+
+            loadSaveGame(spriteBatch,);
 
             spriteBatch.Draw(cadreSauvegardeTex, new Vector2(20, 370), Color.White);
             spriteBatch.Draw(cadreSauvegardeTex, new Vector2(20, 460), Color.White);
@@ -75,10 +70,9 @@ namespace My_Life
 
             spriteBatch.Draw(boutonSonsTex, new Vector2(45, 145), Color.White);
             spriteBatch.Draw(boutonMusiqueTex, new Vector2(145, 145), Color.White);
-
-            spriteBatch.DrawString(Game1.ImpactFont24, "Sauvegarde 1", new Vector2(40, 380), textColor);
-            spriteBatch.DrawString(Game1.ImpactFont24, "Sauvegarde 2", new Vector2(40, 470), textColor);
-            spriteBatch.DrawString(Game1.ImpactFont24, "Sauvegarde 3", new Vector2(40, 560), textColor);
+            spriteBatch.DrawString(Game1.ImpactFont24, nameSave[0], new Vector2(40, 380), textColor);
+            spriteBatch.DrawString(Game1.ImpactFont24, nameSave[1], new Vector2(40, 470), textColor);
+            spriteBatch.DrawString(Game1.ImpactFont24, nameSave[2], new Vector2(40, 560), textColor);
 
         }
 
@@ -87,11 +81,33 @@ namespace My_Life
             Game1.scene = a;
         }
 
-        private void loadSaveGame()
+        private void loadSaveGame(SpriteBatch spriteBatch)
         {
-            if (Game1.ClickTest(Mouse.GetState(),boutonSauvegarde1Rectangle)) SaveGame.ReadSettingsFromIsoStorage(1);
-            if (Game1.ClickTest(Mouse.GetState(),boutonSauvegarde2Rectangle)) SaveGame.ReadSettingsFromIsoStorage(2);
-            if (Game1.ClickTest(Mouse.GetState(),boutonSauvegarde3Rectangle)) SaveGame.ReadSettingsFromIsoStorage(3);
+            nameSave = SaveGame.ReadSaveName();
+            if (Game1.ClickTest(Mouse.GetState(), boutonSauvegarde1Rectangle)) InfoPartie(0, spriteBatch);
+            if (Game1.ClickTest(Mouse.GetState(), boutonSauvegarde2Rectangle)) if (SaveGame.ReadSettingsFromIsoStorage(1)) InfoPartie(1, spriteBatch);
+            if (Game1.ClickTest(Mouse.GetState(), boutonSauvegarde3Rectangle)) if (SaveGame.ReadSettingsFromIsoStorage(2)) InfoPartie(2, spriteBatch);
+        }
+
+        private void InfoPartie(int a, SpriteBatch spriteBatch)
+        {
+            int mesure1, mesure2;
+            
+            if (mesure2 < mesure1 + 1)
+            {
+                mesure2 = gt.TotalGameTime.TotalSeconds;
+                if (SaveGame.ReadSettingsFromIsoStorage(a))
+                {
+                    spriteBatch.Draw(cadrePartieChargeeTex, new Vector2(100, 300), Color.White);
+                    spriteBatch.DrawString(Game1.ImpactFont24, "Partie " + a + " Chargee !", new Vector2(110, 300), textColor);
+                }
+                else
+                {
+                    spriteBatch.Draw(cadrePartieChargeeTex, new Vector2(100, 300), Color.White);
+                    spriteBatch.DrawString(Game1.ImpactFont24, "Partie " + a + " non Chargee !", new Vector2(105, 300), textColor);
+                }
+            }
+            
         }
 
 

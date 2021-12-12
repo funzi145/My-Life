@@ -25,8 +25,8 @@ namespace My_Life
         {
             var sc = new TopBarClass();
             sc.LoadContent(device, spriteBatch, Content);
-            sc.Draw(device, spriteBatch, gametime);
             sc.Update(gametime);
+            sc.Draw(device, spriteBatch, gametime);
         }
 
         public void Update(GameTime gameTime)
@@ -60,13 +60,23 @@ namespace My_Life
                 case 8:
                     topBarString = "PARAMETRE";
                     break;
+                default:
+                    topBarString = "Erreur";
+                    break;
             }
+
+            if (scene == 1) { if (Game1.ClickTest(Mouse.GetState(), boutonBackRectangle)) Game1.toExit = true; }
+            else { ChangeScene(1); }
+
         }
 
         protected void LoadContent(GraphicsDeviceManager device, SpriteBatch spriteBatch, Microsoft.Xna.Framework.Content.ContentManager Content)
         {
             topBarTex = Content.Load<Texture2D>("Logo/Top Bar");
             boutonBackTex = Content.Load<Texture2D>("Logo/Bouton Retour");
+            if (scene == 1)
+                boutonBackTex = Content.Load<Texture2D>("Logo/Bouton Quitter");
+
             boutonSaveTex = Content.Load<Texture2D>("Logo/Logo Sauvegarde");
             boutonParametreTex = Content.Load<Texture2D>("Logo/Logo Parametre");
         }
@@ -76,14 +86,15 @@ namespace My_Life
             spriteBatch.Draw(topBarTex, new Vector2(20, 10), Color.White);
             spriteBatch.DrawString(Game1.ImpactFont24,topBarString, new Vector2(40, 10), textColor);
             spriteBatch.Draw(boutonBackTex, new Vector2(boutonBackRectangle.X, boutonBackRectangle.Y), Color.White);
-            spriteBatch.Draw(boutonBackTex, new Vector2(boutonBackRectangle.X, boutonBackRectangle.Y), Color.White);
-            spriteBatch.Draw(boutonBackTex, new Vector2(boutonBackRectangle.X, boutonBackRectangle.Y), Color.White);
+            spriteBatch.Draw(boutonSaveTex, new Vector2(boutonSaveRectangle.X, boutonSaveRectangle.Y), Color.White);
+            spriteBatch.Draw(boutonParametreTex, new Vector2(boutonParametreRectangle.X, boutonParametreRectangle.Y), Color.White);
         }
 
         private void ChangeScene(int a)
         {
             Game1.scene = a;
         }
+
 
     }
 }

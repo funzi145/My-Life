@@ -16,8 +16,7 @@ namespace My_Life
             faim = Game1.faim,
             criminalite = Game1.criminalite;
 
-        Texture2D topBarTex,
-                boutonParametreTex,
+        Texture2D boutonParametreTex,
                 cadreJobsTexture,
                 cadreMoneyTexture,
                 cadreInfoTexture,
@@ -43,12 +42,12 @@ namespace My_Life
                 logoNourritureGrandTexture, 
                 logoSanteGrandTexture;
 
-        Rectangle boutonJobRectangle = new Rectangle(215, 440, 145, 100),
-                boutonAchatRectangle = new Rectangle(215, 440, 145, 100),
-                boutonNourritureRectangle = new Rectangle(215, 440, 145, 100),
-                boutonSanteRectangle = new Rectangle(215, 440, 145, 100),
-                boutonBanqueRectangle = new Rectangle(330, 430, 145, 100),
-                boutonNesterRectangle = new Rectangle(215, 440, 145, 100),
+        Rectangle boutonJobRectangle = new Rectangle(20, 440, 145, 100),
+                boutonAchatRectangle = new Rectangle(20, 540, 145, 100),
+                boutonNourritureRectangle = new Rectangle(175, 440, 145, 100),
+                boutonSanteRectangle = new Rectangle(175, 540, 145, 100),
+                boutonBanqueRectangle = new Rectangle(330, 440, 145, 100),
+                boutonNesterRectangle = new Rectangle(330, 540, 145, 100),
 
                 boutonParametreRectangle = new Rectangle(315,15,30,30),
                 boutonSaveRectangle = new Rectangle(280,15,30,30);
@@ -70,14 +69,14 @@ namespace My_Life
 
             if (Game1.ms1.LeftButton == ButtonState.Pressed && Game1.ms2.LeftButton == ButtonState.Released)
             {
-                if (ClickTest(Game1.posSouris, boutonNourritureRectangle)) ChangeScene(2);
-                if (ClickTest(Game1.posSouris, boutonSanteRectangle)) ChangeScene(3);
-                if (ClickTest(Game1.posSouris, boutonJobRectangle)) ChangeScene(4);
-                if (ClickTest(Game1.posSouris, boutonBanqueRectangle)) ChangeScene(5);
-                if (ClickTest(Game1.posSouris, boutonAchatRectangle)) ChangeScene(6);
-                if (ClickTest(Game1.posSouris, boutonNesterRectangle)) ChangeScene(7);
-                if (ClickTest(Game1.posSouris, boutonParametreRectangle)) ChangeScene(8);
-                if (ClickTest(Game1.posSouris, boutonSaveRectangle)) ChangeScene(-1);
+                if (ClickTest(Mouse.GetState(), boutonNourritureRectangle)) ChangeScene(2);
+                if (ClickTest(Mouse.GetState(), boutonSanteRectangle)) ChangeScene(3);
+                if (ClickTest(Mouse.GetState(), boutonJobRectangle)) ChangeScene(4);
+                if (ClickTest(Mouse.GetState(), boutonBanqueRectangle)) ChangeScene(5);
+                if (ClickTest(Mouse.GetState(), boutonAchatRectangle)) ChangeScene(6);
+                if (ClickTest(Mouse.GetState(), boutonNesterRectangle)) ChangeScene(7);
+                if (ClickTest(Mouse.GetState(), boutonParametreRectangle)) ChangeScene(8);
+                if (ClickTest(Mouse.GetState(), boutonSaveRectangle)) ChangeScene(-1);
             }
             Game1.ms2 = Game1.ms1;
 
@@ -85,7 +84,6 @@ namespace My_Life
 
         protected void LoadContent(GraphicsDeviceManager device, SpriteBatch spriteBatch, Microsoft.Xna.Framework.Content.ContentManager Content)
         {
-            topBarTex = Content.Load<Texture2D>("Scene 1/TopBar");
             boutonQuitterTexture = Content.Load<Texture2D>("Logo/Bouton Quitter");
             boutonParametreTex = Content.Load<Texture2D>("Scene 1/Logo Parametre");
             saveTex = Content.Load<Texture2D>("Scene 1/Logo Sauvegarde");
@@ -116,7 +114,6 @@ namespace My_Life
         public void Draw(GraphicsDeviceManager device, SpriteBatch _spriteBatch, GameTime gametime)
         {
             device.GraphicsDevice.Clear(backgroundColor);
-            _spriteBatch.Draw(topBarTex, new Vector2(20, 10), Color.White);
             _spriteBatch.Draw(boutonParametreTex, new Vector2(boutonParametreRectangle.X, boutonParametreRectangle.Y), Color.White);
             _spriteBatch.Draw(saveTex, new Vector2(boutonSaveRectangle.X, boutonSaveRectangle.Y), Color.White);
 
@@ -124,7 +121,6 @@ namespace My_Life
             _spriteBatch.Draw(logoNourriturePetitTexture, new Vector2(45, 75), Color.White);
             _spriteBatch.Draw(logoSantePetitTexture, new Vector2(45, 135), Color.White);
             _spriteBatch.Draw(logoMenotesTexture, new Vector2(45, 195), Color.White);
-            _spriteBatch.Draw(boutonQuitterTexture, new Vector2(boutonBackRectangle.X, boutonBackRectangle.Y), Color.White);
 
             _spriteBatch.DrawString(Game1.ImpactFont24, Game1.faimString, new Vector2(110, 80), Color.Black);
             _spriteBatch.DrawString(Game1.ImpactFont24, Game1.santeString, new Vector2(110, 140), Color.Black);
@@ -148,7 +144,7 @@ namespace My_Life
             _spriteBatch.Draw(logoJobTexture, new Vector2(52, 440), Color.White);
             _spriteBatch.Draw(logoAchatTexture, new Vector2(52, 540), Color.White);
             _spriteBatch.Draw(cadreJobsTexture, new Vector2(175, 430), Color.White);
-            _spriteBatch.Draw(logoNourritureGrandTexture, new Vector2(boutonNourritureRectangle.X, boutonNourritureRectangle.Y), Color.White);
+            _spriteBatch.Draw(logoNourritureGrandTexture, new Vector2(210, 440), Color.White);
             _spriteBatch.Draw(logoSanteGrandTexture, new Vector2(210, 540), Color.White);
             _spriteBatch.Draw(cadreJobsTexture, new Vector2(330, 430), Color.White);
             _spriteBatch.Draw(logoBanqueGrandTexture, new Vector2(358, 440), Color.White);
@@ -176,5 +172,6 @@ namespace My_Life
             }
             return false;
         }
+
     }
 }
