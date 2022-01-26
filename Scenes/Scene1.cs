@@ -75,8 +75,6 @@ namespace My_Life
                 if (ClickTest(Mouse.GetState(), boutonBanqueRectangle)) ChangeScene(5);
                 if (ClickTest(Mouse.GetState(), boutonAchatRectangle)) ChangeScene(6);
                 if (ClickTest(Mouse.GetState(), boutonNesterRectangle)) ChangeScene(7);
-                if (ClickTest(Mouse.GetState(), boutonParametreRectangle)) ChangeScene(8);
-                if (ClickTest(Mouse.GetState(), boutonSaveRectangle)) ChangeScene(-1);
             }
             Game1.ms2 = Game1.ms1;
 

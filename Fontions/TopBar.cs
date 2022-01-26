@@ -9,90 +9,73 @@ namespace My_Life
 {
     class TopBarClass
     {
-        Texture2D topBarTex, boutonBackTex, boutonSaveTex, boutonParametreTex;
-
-        int scene = Game1.scene;
-
-        string topBarString;
-
         Color textColor = new Color(64, 64, 64);
 
-        Rectangle boutonBackRectangle = new Rectangle(350, 16, 120, 30),
+        static Rectangle boutonBackRectangle = new Rectangle(350, 16, 120, 30),
                 boutonParametreRectangle = new Rectangle(315, 15, 30, 30),
                 boutonSaveRectangle = new Rectangle(280, 15, 30, 30);
 
-        public static void start(GraphicsDeviceManager device, SpriteBatch spriteBatch, Microsoft.Xna.Framework.Content.ContentManager Content, GameTime gametime)
+        public static void TopBar()
         {
-            var sc = new TopBarClass();
-            sc.LoadContent(device, spriteBatch, Content);
-            sc.Update(gametime);
-            sc.Draw(device, spriteBatch, gametime);
+            ClickCheck();
+            StringChoose();
         }
 
-        public void Update(GameTime gameTime)
+        public static void ClickCheck()
         {
-            switch (scene)
-            {
-                case -1:
-                    topBarString = "SAUVEGARDER";
-                    break;
-                case 1:
-                    topBarString = "MENU PRINCIPAL";
-                    break;
-                case 2:
-                    topBarString = "NOURRITURE";
-                    break;
-                case 3:
-                    topBarString = "SANTE";
-                    break;
-                case 4:
-                    topBarString = "JOB";
-                    break;
-                case 5:
-                    topBarString = "BANQUE";
-                    break;
-                case 6:
-                    topBarString = "ACHAT";
-                    break;
-                case 7:
-                    topBarString = "NESTER";
-                    break;
-                case 8:
-                    topBarString = "PARAMETRE";
-                    break;
-                default:
-                    topBarString = "Erreur";
-                    break;
-            }
-
-            if (scene == 1) { if (Game1.ClickTest(Mouse.GetState(), boutonBackRectangle)) Game1.toExit = true; }
-            else { ChangeScene(1); }
-
+            if(Game1.ClickTest(Mouse.GetState(), boutonSaveRectangle)) { ChangeScene(-1); }
+            if(Game1.ClickTest(Mouse.GetState(), boutonBackRectangle)) { ChangeScene(buttonBackTest()); }
+            if (Game1.ClickTest(Mouse.GetState(), boutonParametreRectangle)) { ChangeScene(8); }
         }
 
-        protected void LoadContent(GraphicsDeviceManager device, SpriteBatch spriteBatch, Microsoft.Xna.Framework.Content.ContentManager Content)
-        {
-            topBarTex = Content.Load<Texture2D>("Logo/Top Bar");
-            boutonBackTex = Content.Load<Texture2D>("Logo/Bouton Retour");
-            if (scene == 1)
-                boutonBackTex = Content.Load<Texture2D>("Logo/Bouton Quitter");
-
-            boutonSaveTex = Content.Load<Texture2D>("Logo/Logo Sauvegarde");
-            boutonParametreTex = Content.Load<Texture2D>("Logo/Logo Parametre");
-        }
-
-        protected void Draw(GraphicsDeviceManager device, SpriteBatch spriteBatch, GameTime gametime)
-        {
-            spriteBatch.Draw(topBarTex, new Vector2(20, 10), Color.White);
-            spriteBatch.DrawString(Game1.ImpactFont24,topBarString, new Vector2(40, 10), textColor);
-            spriteBatch.Draw(boutonBackTex, new Vector2(boutonBackRectangle.X, boutonBackRectangle.Y), Color.White);
-            spriteBatch.Draw(boutonSaveTex, new Vector2(boutonSaveRectangle.X, boutonSaveRectangle.Y), Color.White);
-            spriteBatch.Draw(boutonParametreTex, new Vector2(boutonParametreRectangle.X, boutonParametreRectangle.Y), Color.White);
-        }
-
-        private void ChangeScene(int a)
+        private static void ChangeScene(int a)
         {
             Game1.scene = a;
+        }
+
+        public static string StringChoose()
+        {
+            switch (Game1.scene)
+            {
+                case -1:
+                    return "SAUVEGARDER";
+                case 1:
+                    return "MENU PRINCIPAL";
+                case 2:
+                    return "NOURRITURE";
+                case 3:
+                    return "SANTE";
+                case 4:
+                    return "JOB";
+                case 5:
+                    return "BANQUE";
+                case 6:
+                    return "ACHAT";
+                case 7:
+                    return "NESTER";
+                case 8:
+                    return "PARAMETRE";
+                default:
+                    return "Erreur";
+
+            }
+
+        }
+
+        public static int buttonBackTest()
+        {
+            if (Game1.ClickTest(Mouse.GetState(), boutonBackRectangle))
+            {
+                switch(Game1.scene)
+                {
+                    case 1:
+                        Game1.toExit = true;
+                        break;
+                    default :
+                        return 1;
+                }
+            }
+            return 0;
         }
 
 

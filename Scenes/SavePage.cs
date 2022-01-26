@@ -56,9 +56,9 @@ namespace My_Life
             spriteBatch.DrawString(Game1.ImpactFont24, nameSave[1], new Vector2(40, 220), textColor);
             spriteBatch.DrawString(Game1.ImpactFont24, nameSave[2], new Vector2(40, 320), textColor);
 
-            spriteBatch.DrawString(Game1.ImpactFont9, Game1.TPSinfo[0].ToString(), new Vector2(300, 120), textColor);
-            spriteBatch.DrawString(Game1.ImpactFont9, Game1.TPSinfo[1].ToString(), new Vector2(300, 220), textColor);
-            spriteBatch.DrawString(Game1.ImpactFont9, Game1.TPSinfo[2].ToString(), new Vector2(300, 320), textColor);
+            spriteBatch.DrawString(Game1.ImpactFont9, Game1.TPSInfoString[0], new Vector2(300, 120), textColor);
+            spriteBatch.DrawString(Game1.ImpactFont9, Game1.TPSInfoString[1], new Vector2(300, 220), textColor);
+            spriteBatch.DrawString(Game1.ImpactFont9, Game1.TPSInfoString[2], new Vector2(300, 320), textColor);
 
             saveSaveGame(spriteBatch);
         }
@@ -100,6 +100,5 @@ namespace My_Life
             spriteBatch.Draw(cadreNameSaveTex, new Vector2(100, 275), Color.White);
             spriteBatch.DrawString(Game1.ImpactFont24, Game1.name[a], new Vector2(120, 275), textColor);
         }
-
     }
 }

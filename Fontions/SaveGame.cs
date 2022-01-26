@@ -126,20 +126,21 @@ namespace My_Life
                             nameSave[i] = "Sauvegarde";
                         tps[i] = tps[i].Substring(14, tps[i].Length - 14);
 
-                        try 
-                        {  
-                            Game1.TPSinfo[i] = Int32.Parse(tps[i]); 
+                        try
+                        {
+                            Game1.TPSinfo[i] = Int32.Parse(tps[i]);
                         }
-                        catch{ Game1.scene = 0; }
+                        catch { Game1.scene = 0; }
 
                     }
                 }
-                else nameSave[i] = "Vide";
+                else { nameSave[i] = "Vide";
+                    Game1.TPSInfoString[i] = "0";
+                }
 
             }
             return nameSave;
         }
-
     }
 
     public class AppSettings

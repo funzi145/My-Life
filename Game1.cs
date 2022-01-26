@@ -22,6 +22,7 @@ namespace My_Life
         public static int TPS { get; set; }
 
         public static int[] TPSinfo = new int[3];
+        public static string[] TPSInfoString = new string[3];
         public static int Monnaie { get; set; }
         public static int Banque { get; set; }
         public static int scene { get; set; }
@@ -55,6 +56,7 @@ namespace My_Life
                 boutonSaveRectangle = new Rectangle(280, 15, 30, 30);
 
         string topBarString = "MENU PRINCIPAL";
+        public static bool msgSauvegarde = false;
 
         Color textColor = new Color(64, 64, 64);
 
@@ -124,12 +126,9 @@ namespace My_Life
             else if (ks1.IsKeyDown(Keys.NumPad7)) scene = 7;
             else if (ks1.IsKeyDown(Keys.NumPad8)) scene = 8;
 
-            if (ClickTest(Mouse.GetState(), boutonBackRectangle))
-            {
-                if (scene == 1)
-                    this.Exit();
-                else scene = 1;
-            }
+            
+
+            if (msgSauvegarde) saveNbr++;
 
             faimString = faim.ToString();
             santeString = sante.ToString();
@@ -145,6 +144,12 @@ namespace My_Life
 
             TPS++;
             TPSCount();
+
+            Game1.TPSInfoString[0] = "Tps : " + Game1.TPSinfo[0].ToString();
+            Game1.TPSInfoString[1] = "Tps : " + Game1.TPSinfo[1].ToString();
+            Game1.TPSInfoString[2] = "Tps : " + Game1.TPSinfo[2].ToString();
+
+            TopBarClass.TopBar();
 
         }
 
@@ -194,7 +199,7 @@ namespace My_Life
             ks2 = ks1;
             ms2 = ms1;
 
-            topBarString = StringChoose();
+            topBarString = TopBarClass.StringChoose();
 
             if (scene != 0)
             {
@@ -246,32 +251,6 @@ namespace My_Life
             return info;
         }
 
-        public string StringChoose()
-        {
-            switch (scene)
-            {
-                case -1:
-                    return "SAUVEGARDER";
-                case 1:
-                    return "MENU PRINCIPAL";
-                case 2:
-                    return "NOURRITURE";
-                case 3:
-                    return "SANTE";
-                case 4:
-                    return "JOB";
-                case 5:
-                    return "BANQUE";
-                case 6:
-                    return "ACHAT";
-                case 7:
-                    return "NESTER";
-                case 8:
-                    return "PARAMETRE";
-                default:
-                    return "Erreur";
-            }
-        }
 
     }
 }
