@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using My_Life.Fontions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -59,7 +61,7 @@ namespace My_Life
             var sc = new Scene2();
             sc.LoadContent(device, spriteBatch, Content);
             sc.Update(gametime);
-            sc.Draw(device, spriteBatch, gametime);
+            sc.Draw(device, spriteBatch, Content);
         }
 
         public void Update(GameTime gameTime)
@@ -69,8 +71,8 @@ namespace My_Life
         protected void LoadContent(GraphicsDeviceManager device, SpriteBatch spriteBatch, Microsoft.Xna.Framework.Content.ContentManager Content)
         {
             boutonQuitterTexture = Content.Load<Texture2D>("Logo/Bouton Quitter");
-            boutonParametreTex = Content.Load<Texture2D>("Scene 1/Logo Parametre");
-            saveTex = Content.Load<Texture2D>("Scene 1/Logo Sauvegarde");
+            boutonParametreTex = Content.Load<Texture2D>("Logo/Logo Parametre");
+            saveTex = Content.Load<Texture2D>("Logo/Logo Sauvegarde");
 
             cadreBarreTexture = Content.Load<Texture2D>("Scene 1/Cadre Section Barre");
             cadreInfoTexture = Content.Load<Texture2D>("Scene 1/Cadre Section Info");
@@ -84,8 +86,6 @@ namespace My_Life
             logoMonnaieTexture = Content.Load<Texture2D>("Logo/Logo Monnaie");
             logoMenotesTexture = Content.Load<Texture2D>("Logo/Logo Menotes");
 
-            logoVoitureTexture = Content.Load<Texture2D>("Logo/Logo Voiture");
-            logoImmeubleTexture = Content.Load<Texture2D>("Logo/Logo Imeuble");
 
             logoAchatTexture = Content.Load<Texture2D>("Logo/Logo Achat");
             logoNesterTexture = Content.Load<Texture2D>("Logo/Logo Nester");
@@ -95,7 +95,7 @@ namespace My_Life
             logoNourritureGrandTexture = Content.Load<Texture2D>("Logo/Logo Nourriture grand");
         }
 
-        protected void Draw(GraphicsDeviceManager device, SpriteBatch _spriteBatch, GameTime gametime)
+        protected void Draw(GraphicsDeviceManager device, SpriteBatch _spriteBatch, ContentManager Content)
         {
             device.GraphicsDevice.Clear(backgroundColor);
             _spriteBatch.Draw(boutonParametreTex, new Vector2(boutonParametreRectangle.X, boutonParametreRectangle.Y), Color.White);
@@ -110,19 +110,16 @@ namespace My_Life
             _spriteBatch.DrawString(Game1.ImpactFont24, Game1.santeString, new Vector2(110, 140), Color.Black);
             _spriteBatch.DrawString(Game1.ImpactFont24, Game1.criminaliteString, new Vector2(110, 200), Color.Black);
 
-            _spriteBatch.Draw(cadreInfoTexture, new Vector2(20, 265), Color.White);
-            _spriteBatch.Draw(logoVoitureTexture, new Vector2(35, 280), Color.White);
-            _spriteBatch.Draw(logo2PointsTexture, new Vector2(95, 283), Color.White);
-            _spriteBatch.Draw(logoImmeubleTexture, new Vector2(35, 340), Color.White);
-            _spriteBatch.Draw(logo2PointsTexture, new Vector2(95, 348), Color.White);
-
-
+            Cadre.Start(_spriteBatch, Content, new Rectangle(20, 265, 220, 70));
             _spriteBatch.Draw(cadreMoneyTexture, new Vector2(255, 265), Color.White);
-            _spriteBatch.Draw(cadreMoneyTexture, new Vector2(255, 345), Color.White);
+            _spriteBatch.Draw(cadreMoneyTexture, new Vector2(20, 265), Color.White);
             _spriteBatch.Draw(logoMonnaieTexture, new Vector2(270, 280), Color.White);
             _spriteBatch.DrawString(Game1.ImpactFont24, Game1.MonnaieString, new Vector2(365, 280), Color.Black);
-            _spriteBatch.Draw(logoBanquePetitTexture, new Vector2(275, 353), Color.White);
-            _spriteBatch.DrawString(Game1.ImpactFont24, Game1.BanqueString, new Vector2(365, 360), Color.Black);
+            _spriteBatch.Draw(logoBanquePetitTexture, new Vector2(40, 273), Color.White);
+            _spriteBatch.DrawString(Game1.ImpactFont24, Game1.BanqueString, new Vector2(120, 281), Color.Black);
+
+            //AffichagesJobs.Start(_spriteBatch,Content);
+            Cadre.Start(_spriteBatch, Content, new Rectangle(20, 400, 370, 145), logoAchatTexture, new Rectangle(55,30,150,20));
 
         }
 

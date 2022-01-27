@@ -66,8 +66,8 @@ namespace My_Life
         protected void LoadContent(GraphicsDeviceManager device, SpriteBatch spriteBatch, Microsoft.Xna.Framework.Content.ContentManager Content)
         {
             boutonQuitterTexture = Content.Load<Texture2D>("Logo/Bouton Quitter");
-            boutonParametreTex = Content.Load<Texture2D>("Scene 1/Logo Parametre");
-            saveTex = Content.Load<Texture2D>("Scene 1/Logo Sauvegarde");
+            boutonParametreTex = Content.Load<Texture2D>("Logo/Logo Parametre");
+            saveTex = Content.Load<Texture2D>("Logo/Logo Sauvegarde");
 
             cadreBarreTexture = Content.Load<Texture2D>("Scene 1/Cadre Section Barre");
             cadreInfoTexture = Content.Load<Texture2D>("Scene 1/Cadre Section Info");
